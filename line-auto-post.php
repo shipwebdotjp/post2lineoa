@@ -4,7 +4,7 @@
   Plugin Name: Post to LINE Official Account
   Plugin URI: https://www.shipweb.jp/
   Description: Post to LINE Officail Account too when Post to WordPress. This plugin is based on LINE AUTO POST by growniche.
-  Version: 1.0.0
+  Version: 1.0.1
   Author: ship
   Author URI: https://www.shipweb.jp/
   License: GPLv3
@@ -165,10 +165,27 @@ class post2lineoa {
      * 正規表現：ChannelAccessToken
      */
     const REGEXP_CHANNEL_ACCESS_TOKEN = '/^[a-zA-Z0-9+\/=]{100,}$/';
+    
     /**
      * 正規表現：ChannelSecret
      */
     const REGEXP_CHANNEL_SECRET = '/^[a-z0-9]{30,}$/';
+
+    /**
+     * 通知メッセージ中のリンクラベル
+     */
+    const PARAMETER__READ_MORE_LABEL = 'Read more';
+ 
+    /**
+     * 通知メッセージ中の画像領域のアクペクト比
+     */
+    const PARAMETER__IMAGE_ASPECTRATE = '16:9';
+
+    /**
+     * 通知メッセージの背景色
+     */
+    const PARAMETER__TILE_BACKGROUND_COLOR = "#FFFFFF";
+   
 
     /**
      * WordPressの読み込みが完了してヘッダーが送信される前に実行するアクションにフックする、
@@ -376,7 +393,7 @@ class post2lineoa {
     		
             if($thumb != ""){
                 //サムネイル画像のImageコンポーネント
-                $thumbImageComponent =  new \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\ImageComponentBuilder($thumb,NULL,NULL,NULL,NULL,'100%','16:9','cover');
+                $thumbImageComponent =  new \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\ImageComponentBuilder($thumb,NULL,NULL,NULL,NULL,'100%',self::PARAMETER__IMAGE_ASPECTRATE,'cover');
 
                 //ヒーローブロック
                 $thumbBoxComponent =  new \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\BoxComponentBuilder("vertical",[$thumbImageComponent],NULL,NULL,'none');
@@ -407,7 +424,7 @@ class post2lineoa {
             $bodyBoxComponent->setPaddingEnd('xl');  
 
             //リンクアクションコンポーネント
-            $linkActionBuilder = new \LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder("Read more",$link);
+            $linkActionBuilder = new \LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder(self::PARAMETER__READ_MORE_LABEL,$link);
 
             //リンクのボタンコンポーネント
             $linkButtonComponent =  new \LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\ButtonComponentBuilder($linkActionBuilder,NULL,NULL,NULL,'link',NULL,NULL);
@@ -417,7 +434,7 @@ class post2lineoa {
             $footerBoxComponent->setPaddingTop('none');
 
             //ブロックスタイル
-            $blockStyleBuilder =  new \LINE\LINEBot\MessageBuilder\Flex\BlockStyleBuilder("#FFFFFF");
+            $blockStyleBuilder =  new \LINE\LINEBot\MessageBuilder\Flex\BlockStyleBuilder(self::PARAMETER__TILE_BACKGROUND_COLOR);
 
             //バブルスタイル
             $bubbleStyleBuilder =  new \LINE\LINEBot\MessageBuilder\Flex\BubbleStylesBuilder($blockStyleBuilder,$blockStyleBuilder,$blockStyleBuilder,$blockStyleBuilder);
