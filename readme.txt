@@ -21,7 +21,9 @@ You can put plugins folder
  
 == Changelog ==
 
-= 1.0.0 =
-* 2020-11-24 First release
 = 1.0.1 =
 * 2021-03-31 Change layout to Flex Message
+
+= 1.0.0 =
+* 2020-11-24 First release
+
